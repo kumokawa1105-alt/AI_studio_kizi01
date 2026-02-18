@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI活用で、あなたのビジネスを加速させる</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f5f5f7;
+    --surface2: #ebebef;
+    --accent: #0066cc;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #111111;
+    --muted: #555566;
+    --border: rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    line-height: 1.8;
+  }
+
+  /* ===== NOISE OVERLAY ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 24px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,102,204,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(124,58,237,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 30% at 20% 60%, rgba(245,158,11,0.08) 0%, transparent 50%);
+    animation: bgPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes bgPulse {
+    from { opacity: 0.7; }
+    to { opacity: 1; }
+  }
+
+  .warning-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,158,11,0.15);
+    border: 1px solid rgba(245,158,11,0.4);
+    color: var(--accent3);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 40px;
+    animation: fadeInDown 0.6s ease both;
+  }
+
+  .warning-badge::before { content: '⚠'; }
+
+  .hero h1 {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: clamp(1.7rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    animation: fadeInUp 0.8s ease 0.2s both;
+  }
+
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--text);
+    max-width: 600px;
+    margin-bottom: 48px;
+    animation: fadeInUp 0.8s ease 0.4s both;
+  }
+
+  .hero-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 56px;
+    animation: fadeInUp 0.8s ease 0.5s both;
+  }
+
+  .q-pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .q-pill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 3s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    50%, 100% { transform: translateX(100%); }
+  }
+
+  .hero-cta {
+    animation: fadeInUp 0.8s ease 0.7s both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--accent), #0088ff);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 18px 48px;
+    border-radius: 100px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(0,102,204,0.25);
+    letter-spacing: 0.03em;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,102,204,0.35);
+  }
+
+  .btn-primary::after { content: '→'; font-size: 1.1em; }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    font-size: 0.75rem;
+    animation: fadeIn 1s ease 1.5s both;
+  }
+
+  .scroll-indicator .arrow {
+    width: 24px;
+    height: 24px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg);
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50% { transform: rotate(45deg) translateY(6px); }
+  }
+
+  /* ===== SECTION COMMON ===== */
+  section {
+    padding: 100px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Syne', 'Noto Sans JP', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    color: var(--text);
+    font-size: 1rem;
+    max-width: 600px;
+    margin-bottom: 64px;
+  }
+
+  /* ===== CASE STUDIES ===== */
+  .cases-section {
+    background: var(--surface);
+    max-width: 100%;
+    padding: 100px 24px;
+  }
+
+  .cases-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .case-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .case-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0,102,204,0.3);
+  }
+
+  .case-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .case-card:hover::before { opacity: 1; }
+
+  .case-num {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .case-block { margin-bottom: 20px; }
+
+  .case-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+
+  .label-before {
+    background: rgba(200,0,0,0.08);
+    color: #cc2200;
+    border: 1px solid rgba(200,0,0,0.25);
+  }
+
+  .label-after {
+    background: rgba(0,102,204,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(0,102,204,0.3);
+  }
+
+  .case-text {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .case-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  .case-arrow { display: none; }
+
+  /* ===== CAPABILITIES ===== */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  @media (min-width: 640px) {
+    .cap-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .cap-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 20px;
+    text-align: center;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .cap-item:hover {
+    transform: scale(1.04);
+    background: rgba(124,58,237,0.07);
+    border-color: rgba(124,58,237,0.4);
+  }
+
+  .cap-icon { font-size: 2rem; margin-bottom: 12px; }
+  .cap-name { font-size: 0.9rem; font-weight: 700; }
+
+  /* ===== ACHIEVEMENTS ===== */
+  .achievements-section { text-align: center; }
+
+  .company-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+
+  .company-tag {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    color: var(--text);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .company-tag:hover {
+    border-color: rgba(0,102,204,0.3);
+    color: var(--text);
+  }
+
+  .seminar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .seminar-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  .seminar-item::before {
+    content: '▸';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ===== VOICES ===== */
+  .voices-section { background: var(--surface); max-width: 100%; padding: 100px 24px; }
+  .voices-inner { max-width: 1100px; margin: 0 auto; }
+
+  .voices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .voice-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    position: relative;
+    transition: transform 0.3s;
+  }
+
+  .voice-card:hover { transform: translateY(-4px); }
+
+  .voice-quote {
+    position: absolute;
+    top: 24px;
+    right: 28px;
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--accent2);
+    opacity: 0.2;
+    font-family: Georgia, serif;
+  }
+
+  .voice-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .voice-company {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .voice-text {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  /* ===== STATS ===== */
+  .stats-section {
+    text-align: center;
+    padding: 100px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(124,58,237,0.06) 0%, transparent 70%);
+  }
+
+  .big-stat {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(5rem, 15vw, 12rem);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .stat-label {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  .stat-source {
+    font-size: 0.8rem;
+    color: var(--text);
+    max-width: 500px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .stat-bridge {
+    font-size: 1.1rem;
+    color: var(--text);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  .stat-bridge strong { color: var(--text); }
+
+  /* ===== CTA SECTION ===== */
+  .cta-section {
+    background: var(--surface);
+    max-width: 100%;
+    padding: 100px 24px;
+  }
+
+  .cta-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .merits {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 48px 0;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .merit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .merit-item:hover {
+    border-color: rgba(0,102,204,0.3);
+    transform: translateX(6px);
+  }
+
+  .merit-check {
+    color: var(--accent);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .merit-text { font-size: 0.95rem; line-height: 1.6; }
+
+  /* ===== FLOW ===== */
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 500px;
+    margin: 48px auto;
+  }
+
+  .flow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding-bottom: 40px;
+  }
+
+  .flow-step:not(:last-child)::after { display: none; }
+
+  .step-num {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: white;
+    margin-bottom: 12px;
+  }
+
+  .step-content { width: 100%; }
+  .step-title { font-weight: 700; margin-bottom: 6px; text-align: center; }
+  .step-desc { font-size: 0.85rem; color: var(--text); text-align: left; }
+
+  /* ===== FINAL CTA ===== */
+  .final-cta {
+    padding: 100px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 80% at 50% 100%, rgba(0,102,204,0.05) 0%, transparent 60%);
+  }
+
+  .final-warning {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(200,30,0,0.06);
+    border: 1px solid rgba(200,30,0,0.4);
+    color: #cc2200;
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 32px;
+  }
+
+  .final-title {
+    font-family: 'Syne', 'Noto Sans JP', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  .final-sub {
+    font-size: 1rem;
+    color: var(--text);
+    max-width: 500px;
+    margin: 0 auto 48px;
+  }
+
+  /* ===== DIVIDER ===== */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* ===== FONT UNIFICATION ===== */
+  h1, h2, h3, .section-title, .final-title, .step-title, .cap-name,
+  .voice-company, .case-num, .merit-text, .stat-label {
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  /* Keep Syne only for stat number */
+  .big-stat { font-family: 'Noto Sans JP', sans-serif; }
+
+  /* ===== JOHNSON BOX ===== */
+  .johnson-box {
+    background: var(--surface);
+    border: 1px solid rgba(200,30,0,0.4);
+    border-radius: 16px;
+    padding: 40px 48px;
+    max-width: 800px;
+    margin: 0 auto 80px;
+    position: relative;
+    text-align: left;
+    animation: fadeInUp 0.8s ease 0.1s both;
+  }
+
+  .johnson-box::before { display: none; }
+
+  .johnson-box-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #cc2200;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 20px;
+  }
+
+  .johnson-box-title::before,
+  .johnson-box-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,77,77,0.5));
+  }
+
+  .johnson-box-title::after {
+    background: linear-gradient(90deg, rgba(255,77,77,0.5), transparent);
+  }
+
+  .johnson-box-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .johnson-box-list li {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #333;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .johnson-box-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #cc2200;
+  }
+
+  .johnson-box-body {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: #333;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== SAVINGS BLOCK ===== */
+  .savings-block {
+    margin-top: 48px;
+  }
+
+  .savings-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .savings-badge {
+    display: inline-block;
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .savings-sub {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-top: 10px;
+  }
+
+  .savings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 640px) {
+    .savings-grid { grid-template-columns: 1fr; }
+  }
+
+  .savings-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 20px;
+    text-align: center;
+  }
+
+  .savings-icon { font-size: 1.8rem; margin-bottom: 10px; }
+
+  .savings-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .savings-num {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .savings-num span {
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .savings-detail {
+    font-size: 0.78rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .savings-note {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text);
+    opacity: 0.5;
+  }
+
+  .cap-intro-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .cap-intro-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ===== STOP THINKING BLOCK ===== */
+  .stop-thinking {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 36px;
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto 40px;
+    text-align: left;
+    animation: fadeInUp 0.8s ease 0.5s both;
+  }
+
+  .stop-line {
+    font-size: 0.95rem;
+    color: var(--text);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stop-line:last-of-type { border-bottom: none; }
+
+  .stop-cta {
+    margin-top: 16px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+  }
+
+  .hero-bridge {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.8;
+    margin-bottom: 32px;
+    animation: fadeInUp 0.8s ease 0.6s both;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    /* Hero */
+    .hero { padding: 24px 20px 80px; min-height: auto; }
+    .hero h1 { font-size: 1.7rem; line-height: 1.4; }
+    .hero-sub { font-size: 0.9rem; }
+    .johnson-box { padding: 24px 20px; margin-bottom: 40px; }
+    .johnson-box-body { font-size: 0.88rem; }
+    .btn-primary { font-size: 0.95rem; padding: 16px 32px; }
+    .scroll-indicator { display: none; }
+
+    /* Sections */
+    section { padding: 60px 20px; }
+    .cases-section, .voices-section, .cta-section { padding: 60px 20px; }
+    .section-title { font-size: 1.5rem; }
+    .section-desc { margin-bottom: 40px; }
+
+    /* Case cards */
+    .cases-grid { grid-template-columns: 1fr; gap: 16px; }
+    /* Cases title fix */
+    .cases-inner .section-title { font-size: 1.15rem; }
+    .cta-inner .section-title { font-size: 1.15rem; }
+    .case-card { padding: 24px; }
+
+    /* Capabilities */
+    .cap-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 48px; }
+    .cap-item { padding: 20px 12px; }
+
+    /* Company tags */
+    .company-tag { font-size: 0.78rem; padding: 8px 16px; }
+
+    /* Voices */
+    .voices-grid { grid-template-columns: 1fr; gap: 16px; }
+    .voice-card { padding: 24px; }
+
+    /* Stats */
+    .stats-section { padding: 60px 20px; }
+    .big-stat { font-size: 5rem; }
+    .stat-label { font-size: 1.1rem; }
+    .stat-bridge { font-size: 0.9rem; }
+
+    /* CTA */
+    .merits { margin: 32px auto; }
+    .merit-item { padding: 14px 18px; }
+    .flow-steps { margin: 32px auto; }
+    .step-num { width: 36px; height: 36px; font-size: 0.8rem; }
+
+    /* Final CTA */
+    .final-cta { padding: 60px 20px; }
+    .final-title { font-size: 1.4rem; }
+
+    /* Stop thinking */
+    .stop-thinking { padding: 20px; margin-bottom: 32px; }
+    .stop-line { font-size: 0.88rem; }
+    .stop-cta { font-size: 0.95rem; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 1.45rem; }
+    .johnson-box-title { font-size: 0.95rem; }
+    .section-title { font-size: 1.3rem; }
+    .btn-primary { width: 100%; justify-content: center; max-width: 340px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Johnson Box -->
+  <div class="johnson-box">
+    <div class="johnson-box-title">⚠ 警告</div>
+    <ul class="johnson-box-list">
+      <li>AIを使っている企業と使っていない企業で、これからの時代は大きな差が生まれます。</li>
+      <li>AIをちゃんと活用できている企業は、まだ10%にも満たないのが現実です。</li>
+      <li>AIがどんなインパクトをもたらすのか、興味ある方はぜひ読み進めてください。</li>
+    </ul>
+  </div>
+
+  <h1>
+    「AIって本当にすごいの？」<br>
+    <span class="highlight">「AIってうちでも使えるの？」</span>
+  </h1>
+
+  <p class="hero-sub">
+    と思っている方にほど、ぜひ読んでほしいです。
+  </p>
+
+  <div class="stop-thinking">
+    <p class="stop-line">「文章を書いてくれるんでしょ？」</p>
+    <p class="stop-line">「画像を作ってくれるんでしょ？」</p>
+    <p class="stop-line">「調べごとをしてくれるんでしょ？」</p>
+    <p class="stop-cta">こんなところで止まっていませんか？</p>
+  </div>
+
+  <p class="hero-bridge">AIの本当の力は、もっと深いところにあります。<br>まずは何ができるのか、一緒に見てみましょう。</p>
+
+  <div class="hero-cta">
+    <a href="#cta" class="btn-primary">無料相談してみる</a>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>スクロール</span>
+    <div class="arrow"></div>
+  </div>
+</div>
+
+<!-- ===== CASE STUDIES ===== -->
+<div class="cases-section">
+  <div class="cases-inner">
+    <div class="reveal" style="text-align: left; padding-left: 16px;">
+      <span class="section-label">Case Studies</span>
+      <h2 class="section-title">AIを活用すれば、<br>人件費も作業時間も大幅に削減できます。</h2>
+      <p class="section-desc">実際の導入事例をご覧ください。</p>
+    </div>
+
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <div class="case-num">CASE 01 / 見積もり業務</div>
+        <div class="case-block">
+          <div class="case-label label-before">BEFORE</div>
+          <p class="case-text">朝から晩まで現場で働き、夜に事務所に戻って見積もり作成。残業代もかさむ毎日…</p>
+        </div>
+        <div class="case-divider"></div>
+        <div class="case-block">
+          <div class="case-label label-after">AFTER</div>
+          <p class="case-text">AIがお客さんの要望・条件から自動で見積書を作成。<strong>30秒で完了</strong>し、確認して提出。</p>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-num">CASE 02 / 顧客管理</div>
+        <div class="case-block">
+          <div class="case-label label-before">BEFORE</div>
+          <p class="case-text">100件以上の顧客リストを目視でチェックし、定期連絡。管理が煩わしく、抜け漏れも発生…</p>
+        </div>
+        <div class="case-divider"></div>
+        <div class="case-block">
+          <div class="case-label label-after">AFTER</div>
+          <p class="case-text">AIによる自動管理で「そろそろ連絡時期です」と通知。<strong>メッセージ案も自動生成。</strong></p>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-num">CASE 03 / クリエイティブ</div>
+        <div class="case-block">
+          <div class="case-label label-before">BEFORE</div>
+          <p class="case-text">外注すると数万円かかる画像素材やバナー作成…ツールを使っても初期費用10万円以上…</p>
+        </div>
+        <div class="case-divider"></div>
+        <div class="case-block">
+          <div class="case-label label-after">AFTER</div>
+          <p class="case-text">AIにイメージを伝えるだけで、<strong>プロ級の画像が30秒で完成。</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 削減シミュレーション -->
+    <div class="savings-block reveal">
+      <div class="savings-header">
+        <span class="savings-badge">AIを使った結果、こうなります</span>
+        <p class="savings-sub">これだけの業務をAIに任せると、こうなります。</p>
+      </div>
+      <div class="savings-grid">
+        <div class="savings-item">
+          <div class="savings-icon">⏱</div>
+          <div class="savings-label">月間削減時間</div>
+          <div class="savings-num">約<span>40</span>時間</div>
+          <div class="savings-detail">見積もり・顧客対応・制作作業など</div>
+        </div>
+        <div class="savings-item">
+          <div class="savings-icon">📅</div>
+          <div class="savings-label">年間削減時間</div>
+          <div class="savings-num">約<span>480</span>時間</div>
+          <div class="savings-detail">年間で丸20日分の作業時間が浮く計算</div>
+        </div>
+        <div class="savings-item">
+          <div class="savings-icon">💴</div>
+          <div class="savings-label">年間削減コスト</div>
+          <div class="savings-num">約<span>96</span>万円</div>
+          <div class="savings-detail">時給2,000円換算（残業代・外注費含む）</div>
+        </div>
+      </div>
+      <p class="savings-note">※ 試算は一例です。業種・規模によって異なります。</p>
+    </div>
+
+    <div class="cap-intro reveal" style="margin-top: 80px; text-align: center; margin-bottom: 32px;">
+      <p class="cap-intro-label">MORE POSSIBILITIES</p>
+      <p class="cap-intro-text">これだけじゃない。<br>AIでできることは、まだまだあります。</p>
+    </div>
+
+    <div class="cap-grid reveal">
+      <div class="cap-item">
+        <div class="cap-icon">⚙️</div>
+        <div class="cap-name">業務効率化</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">📈</div>
+        <div class="cap-name">マーケティング</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">🎨</div>
+        <div class="cap-name">クリエイティブ作成</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">📱</div>
+        <div class="cap-name">アプリ開発</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">🤖</div>
+        <div class="cap-name">チャットボット構築</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-icon">📊</div>
+        <div class="cap-name">データ分析・レポート</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== ACHIEVEMENTS ===== -->
+<section class="achievements-section">
+  <div class="reveal">
+    <span class="section-label">Track Record</span>
+    <h2 class="section-title" style="margin-bottom: 48px;">多くの企業様が、すでに<br>AI導入で成果を出しています</h2>
+  </div>
+
+  <div class="reveal">
+    <p style="color: var(--text); margin-bottom: 24px; font-size: 0.85rem; letter-spacing: 0.1em; font-weight: 700;">企業研修・導入実績</p>
+    <div class="company-list">
+      <div class="company-tag">株式会社エースホーム</div>
+      <div class="company-tag">AKATSUKI株式会社</div>
+      <div class="company-tag">福代工務店</div>
+      <div class="company-tag">株式会社フラワーズ</div>
+      <div class="company-tag">あすか創建株式会社</div>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <p style="color: var(--text); margin-bottom: 24px; font-size: 0.85rem; letter-spacing: 0.1em; font-weight: 700;">セミナー・スクール実績</p>
+    <div class="seminar-list" style="margin: 0 auto;">
+      <div class="seminar-item">株式会社RN様主催　工務店向けAIセミナー登壇</div>
+      <div class="seminar-item">アダプトソリューションズ合同会社様主催　AI研修登壇</div>
+      <div class="seminar-item">AIスクール「Eレジデンス」講師</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== VOICES ===== -->
+<div class="voices-section">
+  <div class="voices-inner">
+    <div class="reveal" style="text-align: center;">
+      <span class="section-label">Customer Voices</span>
+      <h2 class="section-title" style="margin-bottom: 40px;">お客様の声</h2>
+    </div>
+
+    <div class="voices-grid">
+      <div class="voice-card reveal">
+        <div class="voice-quote">"</div>
+        <div class="voice-num">VOICE 01</div>
+        <div class="voice-company">株式会社RN 様</div>
+        <p class="voice-text">Facebook記事1万いいね！いったよー、カイトさんのおかげです。ありがとう！ちなみに、芸能人などでなければ1万いいねは、10万回に一回の確率だそうです。</p>
+      </div>
+
+      <div class="voice-card reveal">
+        <div class="voice-quote">"</div>
+        <div class="voice-num">VOICE 02</div>
+        <div class="voice-company">飲食店（蕎麦DAYS 様）</div>
+        <p class="voice-text">凄いです！たった2行入れただけで600字、瞬時に出力してくれました。内容も9割以上直し不要です。10分かからず600字の投稿って今まで私からすれば超スピード化です！出力スピードが半端なく早いです。</p>
+      </div>
+
+      <div class="voice-card reveal">
+        <div class="voice-quote">"</div>
+        <div class="voice-num">VOICE 03</div>
+        <div class="voice-company">株式会社iROOM 様</div>
+        <p class="voice-text">以前は生徒からの質問返信に、毎日1〜2時間取られていました。チャットボットを導入してからは基本的な問い合わせはほぼ自動対応。24時間365日対応なので、浮いた時間を授業の質向上やカリキュラム改善に使えるようになり、生徒の満足度にもじわじわ影響が出てきています。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== STATS ===== -->
+<section class="stats-section">
+  <div class="reveal">
+    <div class="big-stat">5%</div>
+    <h2 class="stat-label">AIをちゃんと活用できている企業は<br>10%にも満たないのです。</h2>
+    <p class="stat-source">情報通信総合研究所が2025年9月に公表した「企業における生成AI導入の現状と展望」によると、従業員300人未満の企業のうち、2025年7月時点で全社にAIを導入しているのはわずか5%程度でした。</p>
+    <p class="stat-bridge">
+      もちろん、AIの使い方は十人十色。<br>
+      <strong>「どうすればいいの？」「うちで使えるの？」から始めてOKです。</strong><br>
+      あなたのビジネスへのAI活用を、一緒に考えます。
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== CTA ===== -->
+<div class="cta-section" id="cta">
+  <div class="cta-inner">
+    <div class="reveal">
+      <span class="section-label">Free Consultation</span>
+      <h2 class="section-title">AIがどんなインパクトをもたらすのか、<br>まずは気軽に無料相談してみませんか？</h2>
+    </div>
+
+    <div class="merits reveal">
+      <div class="merit-item">
+        <span class="merit-check">✔</span>
+        <span class="merit-text">AIがあなたのビジネスにどう使えるかがわかる</span>
+      </div>
+      <div class="merit-item">
+        <span class="merit-check">✔</span>
+        <span class="merit-text">導入コストや効果の目安がわかる</span>
+      </div>
+      <div class="merit-item">
+        <span class="merit-check">✔</span>
+        <span class="merit-text">競合他社との差をつけるヒントが得られる</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <p style="font-weight: 700; font-size: 1.1rem; margin-bottom: 32px;">相談の流れ</p>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">フォームを送信する</div>
+            <div class="step-desc">ボタンをタップしてフォームに必要事項を入力するだけ。たった1分で完了します。</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">日程調整のご連絡</div>
+            <div class="step-desc">担当者よりご連絡し、ご都合の良い日時を調整します。</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">AIの可能性を体感する</div>
+            <div class="step-desc">オンライン・訪問、どちらも対応可能。あなたのビジネスに合わせた具体的な活用イメージをその場でご提案します。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <a href="#" class="btn-primary" style="font-size: 1.1rem; padding: 20px 56px;">無料相談はこちら</a>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  // Intersection Observer for reveal animations
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 100);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Stagger children in grids
+  document.querySelectorAll('.cases-grid, .voices-grid, .merits').forEach(grid => {
+    const children = grid.querySelectorAll('.reveal');
+    children.forEach((child, i) => {
+      child.style.transitionDelay = `${i * 0.1}s`;
+    });
+  });
+</script>
+</body>
+</html>
